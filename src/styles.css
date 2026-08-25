@@ -488,14 +488,11 @@ textarea:focus-visible,
   background: transparent;
   color: var(--text);
   text-align: left;
-  transition: transform .2s ease;
 }
 
-.recipe-card:hover { transform: translateY(-3px); }
 .recipe-thumb { position: relative; display: block; overflow: hidden; aspect-ratio: 16 / 10; margin-bottom: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .recipe-thumb::after { position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 -24px 32px rgba(0,0,0,.1); content: ''; pointer-events: none; }
 .recipe-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .35s cubic-bezier(.2,.8,.2,1), filter .2s ease; }
-.recipe-card:hover .recipe-thumb img { transform: scale(1.035); filter: brightness(1.05); }
 .recipe-card strong { overflow: hidden; font-size: 12px; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
 .recipe-used { color: var(--text-3); font-size: 11px; }
 

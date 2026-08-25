@@ -288,11 +288,11 @@ function renderHome() {
           <div class="section-title"><div><h2>灵感配方</h2></div></div>
           <div class="recipe-grid">
             ${recipeItems.map(item => `
-              <button class="recipe-card" data-action="use-recipe" data-title="${item.title}">
+              <article class="recipe-card">
                 <span class="recipe-thumb"><img src="${item.image}" alt="" loading="lazy" /></span>
                 <strong>${item.title}</strong>
                 <span class="recipe-used">已使用 ${item.used} 次</span>
-              </button>`).join('')}
+              </article>`).join('')}
           </div>
         </section>
       </section>
@@ -1471,10 +1471,6 @@ app.addEventListener('click', event => {
   if (action === 'start-idea') return enterIdeation();
   if (action === 'start-import') return enterImportAnalysis();
   if (action === 'open-space') return resumeProjectWorkspace(target.dataset.project === 'lamp' ? 'lamp' : 'romance');
-  if (action === 'use-recipe') {
-    showToast(`已选择「${target.dataset.title}」配方`);
-    return render();
-  }
   if (action === 'go-home') {
     clearInterval(analysisTimer);
     clearInterval(runTimer);
