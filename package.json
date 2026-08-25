@@ -1,0 +1,13 @@
+{
+  "name": "medeo-pro-workspace-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "check": "node --check src/app.js && node --check src/demo-data.js && node --check scripts/dev-server.mjs"
+  },
+  "dependencies": {
+    "remixicon": "^4.6.0"
+  }
+}

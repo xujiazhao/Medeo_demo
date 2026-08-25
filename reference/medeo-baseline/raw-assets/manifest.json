@@ -1,0 +1,197 @@
+{
+  "assets": [
+    {
+      "contentType": "font/woff2",
+      "id": "f8eb9f62555a0301",
+      "kind": "font",
+      "name": "Nohemi-VF.woff2",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/f8eb9f62555a0301.woff2",
+      "url": "https://medeo.app/fe-static/fonts/Nohemi-VF.woff2"
+    },
+    {
+      "contentType": "font/woff2",
+      "id": "699ba222be65780a",
+      "kind": "font",
+      "name": "Manrope-normal-500-latin.woff2",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/699ba222be65780a.woff2",
+      "url": "https://medeo.app/fe-static/fonts/Manrope-normal-500-latin.woff2"
+    },
+    {
+      "contentType": "font/woff2",
+      "id": "e14fa1e163845d3e",
+      "kind": "font",
+      "name": "Manrope-normal-400-latin.woff2",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/e14fa1e163845d3e.woff2",
+      "url": "https://medeo.app/fe-static/fonts/Manrope-normal-400-latin.woff2"
+    },
+    {
+      "contentType": "font/woff2",
+      "id": "8f09142b48efb832",
+      "kind": "font",
+      "name": "Manrope-normal-600-latin.woff2",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/8f09142b48efb832.woff2",
+      "url": "https://medeo.app/fe-static/fonts/Manrope-normal-600-latin.woff2"
+    },
+    {
+      "contentType": "",
+      "id": "ce0412e576b4ccb5",
+      "kind": "stylesheet",
+      "name": "bootstrap-CenMDhav.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/ce0412e576b4ccb5.css",
+      "url": "https://medeo.app/fe-assets/bootstrap-CenMDhav.css"
+    },
+    {
+      "contentType": "",
+      "id": "fd94a5c119bd5368",
+      "kind": "stylesheet",
+      "name": "ReferralSharePromoCardInviter-b3s8eypv.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/fd94a5c119bd5368.css",
+      "url": "https://medeo.app/fe-assets/ReferralSharePromoCardInviter-b3s8eypv.css"
+    },
+    {
+      "contentType": "",
+      "id": "cfccaf218e1b0e37",
+      "kind": "stylesheet",
+      "name": "bootstrap-CXABye54.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/cfccaf218e1b0e37.css",
+      "url": "https://medeo.app/fe-assets/bootstrap-CXABye54.css"
+    },
+    {
+      "contentType": "",
+      "id": "06c7b81c494fcaa7",
+      "kind": "stylesheet",
+      "name": "RecipeSegmentDropdown-BM5kT969.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/06c7b81c494fcaa7.css",
+      "url": "https://medeo.app/fe-assets/RecipeSegmentDropdown-BM5kT969.css"
+    },
+    {
+      "contentType": "",
+      "id": "2732b64070ebe471",
+      "kind": "stylesheet",
+      "name": "entry-web-CtggdL7i.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/2732b64070ebe471.css",
+      "url": "https://medeo.app/fe-assets/entry-web-CtggdL7i.css"
+    },
+    {
+      "contentType": "",
+      "id": "d09a8ae38af8c507",
+      "kind": "stylesheet",
+      "name": "UserProfileDialog-CDEOmuKa.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/d09a8ae38af8c507.css",
+      "url": "https://medeo.app/fe-assets/UserProfileDialog-CDEOmuKa.css"
+    },
+    {
+      "contentType": "",
+      "id": "907c140f1a9e35d5",
+      "kind": "stylesheet",
+      "name": "RewardsBanner-CuMWtwj_.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/907c140f1a9e35d5.css",
+      "url": "https://medeo.app/fe-assets/RewardsBanner-CuMWtwj_.css"
+    },
+    {
+      "contentType": "",
+      "id": "2a47a1e7dc88c523",
+      "kind": "stylesheet",
+      "name": "AppShellPage-DS9azDnN.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/2a47a1e7dc88c523.css",
+      "url": "https://medeo.app/fe-assets/AppShellPage-DS9azDnN.css"
+    },
+    {
+      "contentType": "",
+      "id": "34c318a6ee8b7e8b",
+      "kind": "stylesheet",
+      "name": "ProjectsView-BLO1U33a.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/34c318a6ee8b7e8b.css",
+      "url": "https://medeo.app/fe-assets/ProjectsView-BLO1U33a.css"
+    },
+    {
+      "contentType": "",
+      "id": "1c56aeeb2c1bc347",
+      "kind": "stylesheet",
+      "name": "GradientBackground-DGcT2hnG.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/1c56aeeb2c1bc347.css",
+      "url": "https://medeo.app/fe-assets/GradientBackground-DGcT2hnG.css"
+    },
+    {
+      "contentType": "",
+      "id": "30a58f2712fd0917",
+      "kind": "stylesheet",
+      "name": "CommandBox-p94R5QZA.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/30a58f2712fd0917.css",
+      "url": "https://medeo.app/fe-assets/CommandBox-p94R5QZA.css"
+    },
+    {
+      "contentType": "font/woff2",
+      "id": "5c3e2954f0f3385d",
+      "kind": "font",
+      "name": "o2x-icons-Dab9gvL9.woff2",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/5c3e2954f0f3385d.woff2",
+      "url": "https://medeo.app/fe-assets/o2x-icons-Dab9gvL9.woff2"
+    },
+    {
+      "contentType": "",
+      "id": "0d3aa73e0d7f7195",
+      "kind": "stylesheet",
+      "name": "CreationProgressSweepBar-DpXl3Ssn.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/0d3aa73e0d7f7195.css",
+      "url": "https://medeo.app/fe-assets/CreationProgressSweepBar-DpXl3Ssn.css"
+    },
+    {
+      "contentType": "",
+      "id": "e5823a3c3b0f8b5d",
+      "kind": "stylesheet",
+      "name": "CreationSpaceTray-CzHofSwq.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/e5823a3c3b0f8b5d.css",
+      "url": "https://medeo.app/fe-assets/CreationSpaceTray-CzHofSwq.css"
+    },
+    {
+      "contentType": "",
+      "id": "5321df73fdde51eb",
+      "kind": "stylesheet",
+      "name": "PaymentDialogs-BRDWQtyi.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/5321df73fdde51eb.css",
+      "url": "https://medeo.app/fe-assets/PaymentDialogs-BRDWQtyi.css"
+    },
+    {
+      "contentType": "",
+      "id": "34e79561a6c51a06",
+      "kind": "stylesheet",
+      "name": "ReferralGetCreditsDialog-BraJNOGC.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/34e79561a6c51a06.css",
+      "url": "https://medeo.app/fe-assets/ReferralGetCreditsDialog-BraJNOGC.css"
+    },
+    {
+      "contentType": "",
+      "id": "4ee662fefbe325cd",
+      "kind": "stylesheet",
+      "name": "FeatureAnnouncement-BZGnObrb.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/4ee662fefbe325cd.css",
+      "url": "https://medeo.app/fe-assets/FeatureAnnouncement-BZGnObrb.css"
+    },
+    {
+      "contentType": "",
+      "id": "9a6afcae5e2a228d",
+      "kind": "stylesheet",
+      "name": "InlineButton-1tavSqsx.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/9a6afcae5e2a228d.css",
+      "url": "https://medeo.app/fe-assets/InlineButton-1tavSqsx.css"
+    },
+    {
+      "contentType": "",
+      "id": "3736b08cb26dfd3f",
+      "kind": "stylesheet",
+      "name": "rich-input-DaZiZlVy.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/3736b08cb26dfd3f.css",
+      "url": "https://medeo.app/fe-assets/rich-input-DaZiZlVy.css"
+    },
+    {
+      "contentType": "",
+      "id": "33c7f25406ce339c",
+      "kind": "stylesheet",
+      "name": "MediaObjectRef-9rbyutRG.css",
+      "path": "/var/folders/v4/9mvsb7yj0dxc1cmdhy_m64mh0000gn/T/browser-use/assets/dcdb515a-c921-445e-9d90-a153fbe85d26/33c7f25406ce339c.css",
+      "url": "https://medeo.app/fe-assets/MediaObjectRef-9rbyutRG.css"
+    }
+  ],
+  "failures": []
+}
