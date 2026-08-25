@@ -1099,7 +1099,7 @@ function toggleSequencePlayback() {
 
 function timelineTimeAtPointer(event, timeline) {
   const bounds = timeline.getBoundingClientRect();
-  const start = bounds.left + 48;
+  const start = bounds.left + 88;
   const end = bounds.right - 12;
   const ratio = Math.min(1, Math.max(0, (event.clientX - start) / Math.max(1, end - start)));
   return ratio * parseTimecode(activeProject().duration);

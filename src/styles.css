@@ -1297,7 +1297,7 @@ textarea:focus-visible,
 
 @keyframes generation-pulse { 0%,100% { opacity: .45; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.08); } }
 @keyframes generation-scan { to { background-position: -220% 0; } }
-.timeline-playback-layer { position: absolute; z-index: 4; top: 48px; right: 12px; bottom: 10px; left: 48px; pointer-events: none; }
+.timeline-playback-layer { position: absolute; z-index: 4; top: 48px; right: 12px; bottom: 10px; left: 88px; pointer-events: none; }
 .playhead { position: absolute; top: 0; bottom: 0; left: 0; width: 1px; background: var(--primary-2); box-shadow: 0 0 10px rgba(190,151,255,.35); transition: left .12s linear; }
 .timeline-editor.is-scrubbing .playhead { transition: none; }
 .playhead::before { position: absolute; top: 0; left: -4px; width: 9px; height: 9px; border-radius: 0 0 5px 5px; background: var(--primary-2); content: ''; }
