@@ -222,6 +222,8 @@ function renderReport() {
         <header><span>C</span><h1>解法</h1></header>
         <div class="report-item-list">${solutions.map(([title, detail], index) => `<article><span>${String(index + 1).padStart(2, '0')}</span><div><h3>${title}</h3><p>${detail}</p></div></article>`).join('')}</div>
       </section>
+
+      <footer class="report-footer">Designed by Jiazhao Xu</footer>
     </main>`;
 }
 
@@ -893,7 +895,7 @@ function render() {
     app.innerHTML = renderReport();
   } else {
     const demoView = state.view === 'home' ? renderHome() : state.view === 'ideation' ? renderIdeation() : state.view === 'import-analysis' ? renderImportAnalysis() : renderWorkspace();
-    app.innerHTML = `<div class="demo-runtime ${state.demoEntering ? 'demo-entering' : ''}">${demoView}</div><button class="demo-exit-button" data-action="exit-demo">${icon('back')}<span>返回汇报</span></button>`;
+    app.innerHTML = `<div class="demo-runtime ${state.demoEntering ? 'demo-entering' : ''}">${demoView}</div><button class="demo-exit-button" data-action="exit-demo">${icon('back')}<span>退出 Demo</span></button>`;
   }
   if (state.toast) app.insertAdjacentHTML('beforeend', `<div class="toast" role="status" aria-live="polite">${state.toast}</div>`);
   bindInputs();

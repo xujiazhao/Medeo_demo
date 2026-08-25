@@ -152,6 +152,7 @@ button:active { transform: scale(.975); }
 .report-item-list article > span { color: var(--text-3); font-size: 9px; }
 .report-item-list h3 { margin: 0 0 5px; font-size: 15px; }
 .report-item-list p { max-width: 520px; margin: 0; color: var(--text-2); font-size: 11px; line-height: 1.55; }
+.report-footer { width: min(1200px,calc(100% - 80px)); margin: 34px auto 0; padding: 24px 0 34px; border-top: 1px solid var(--line); color: var(--text-3); font-size: 11px; letter-spacing: .02em; }
 .demo-runtime { width: 100%; height: 100vh; overflow: hidden; background: var(--bg); }
 .demo-runtime.demo-entering { animation: demo-top-reveal .5s cubic-bezier(.22,.75,.25,1) both; }
 .demo-exit-button { position: fixed; z-index: 80; right: 12px; bottom: 12px; display: flex; height: 44px; align-items: center; gap: 8px; padding: 0 16px; border: 1px solid rgba(20,16,24,.14); border-radius: 11px; background: rgba(241,237,244,.96); box-shadow: 0 12px 40px rgba(0,0,0,.42); color: #17131c; font-size: 12px; font-weight: 700; backdrop-filter: blur(14px); transition: transform .18s ease,background .18s ease,box-shadow .18s ease; }
