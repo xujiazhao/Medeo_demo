@@ -55,7 +55,10 @@ const state = {
   projectType: 'romance',
   analysisStep: 0,
   analysisComplete: false,
-  demoEntering: false
+  demoEntering: false,
+  playbackTime: 0,
+  playbackClipIndex: 0,
+  previewPlaying: false
 };
 
 const persistedStateKey = 'medeo-product-demo-state-v1';
@@ -68,7 +71,8 @@ try {
       ideaTyping: false,
       planGenerating: false,
       workspaceEntering: false,
-      demoEntering: false
+      demoEntering: false,
+      previewPlaying: false
     });
   }
 } catch {
@@ -667,25 +671,30 @@ function renderMediaStage() {
 
 function renderTimelineStage(asWorkspace = false) {
   const project = activeProject();
-  const primaryVideo = project.videos[0];
+  const segments = playbackSegments(project);
+  const totalDuration = parseTimecode(project.duration);
+  const playbackTime = Math.min(totalDuration, Math.max(0, state.playbackTime));
+  const activeSegment = segments.find(segment => playbackTime < segment.end) || segments.at(-1);
+  const activeClipIndex = Math.min(project.videos.length - 1, Math.max(0, state.playbackClipIndex ?? activeSegment?.index ?? 0));
+  const primaryVideo = project.videos[activeClipIndex] || project.videos[0];
   const shotTask = state.tasks.find(task => task.id === 'shots');
   const isGeneratingShots = state.projectType === 'romance' && shotTask && shotTask.state !== 'done';
   const generatedShotCount = isGeneratingShots ? Math.min(project.clips.length, Math.floor(shotTask.progress / 25)) : project.clips.length;
-  const playheadLabel = state.projectType === 'lamp' ? '00:04' : '00:08';
-  const playheadPosition = state.projectType === 'lamp' ? 24 : 37;
+  const playheadLabel = formatPlaybackTime(playbackTime);
+  const playheadPosition = totalDuration ? playbackTime / totalDuration * 100 : 0;
   const playerContent = isGeneratingShots
     ? `<div class="video-generation-state"><div class="generation-character"><img src="${caseImageAssets[0].url}" alt="林雨婕角色设定"/><span>角色参考</span></div><div class="generation-copy"><span>正在生成视频</span><h2>四段 Home Bar 镜头</h2><p>角色一致性 · 9:16 · 40 秒</p><div class="generation-progress"><i style="width:${shotTask.progress}%"></i></div><strong data-generation-progress>${Math.round(shotTask.progress)}%</strong></div><div class="generation-shot-grid">${project.clips.map((clip, index) => `<span data-generation-shot="${index}" class="${index < generatedShotCount ? 'ready' : index === generatedShotCount ? 'working' : 'pending'}">${index < generatedShotCount ? `<img src="${clip.poster}" alt=""/>` : icon('spark')}<small>${index < generatedShotCount ? '已生成' : index === generatedShotCount ? '生成中' : '等待'}</small></span>`).join('')}</div></div>`
-    : `<video class="workspace-preview-video" src="${primaryVideo.url}" ${primaryVideo.poster ? `poster="${primaryVideo.poster}"` : ''} muted playsinline preload="auto"></video>`;
+    : `<video class="workspace-preview-video" src="${primaryVideo.url}" ${primaryVideo.poster ? `poster="${primaryVideo.poster}"` : ''} data-sequence-index="${activeClipIndex}" playsinline preload="auto" aria-label="四段视频顺序预览"></video>`;
   const timelineClipsMarkup = project.clips.map((clip, index) => {
-    if (!isGeneratingShots) return `<div class="timeline-clip ${clip.tone}" style="--clip-width:${clip.width}%"><span class="clip-thumb">${clip.poster ? `<img src="${clip.poster}" alt=""/>` : `<video src="${clip.source}" muted playsinline preload="auto"></video>`}</span><strong>${clip.title}</strong><small>${clip.range}</small></div>`;
+    if (!isGeneratingShots) return `<div class="timeline-clip ${clip.tone} ${index === activeClipIndex ? 'is-active' : ''}" data-playback-clip="${index}" style="--clip-width:${clip.width}%"><span class="clip-thumb">${clip.poster ? `<img src="${clip.poster}" alt=""/>` : `<video src="${clip.source}" muted playsinline preload="auto"></video>`}</span><strong>${clip.title}</strong><small>${clip.range}</small></div>`;
     const status = index < generatedShotCount ? 'ready' : index === generatedShotCount ? 'working' : 'pending';
     return `<div class="timeline-clip generation-slot ${status}" data-generation-clip="${index}" style="--clip-width:${clip.width}%"><span class="clip-thumb">${status === 'ready' ? `<img src="${clip.poster}" alt=""/>` : icon('spark')}</span><strong>${status === 'ready' ? clip.title : `镜头 ${String(index + 1).padStart(2, '0')}`}</strong><small>${status === 'ready' ? clip.range : status === 'working' ? '生成中' : '等待生成'}</small></div>`;
   }).join('');
   return `
     <section class="timeline-stage ${asWorkspace ? 'workspace-edit-stage' : ''}">
       ${asWorkspace ? '' : `<header class="stage-toolbar"><div><span class="breadcrumb">Workspace / Cut v1</span><strong>${project.duration.replace('00:', '')} 秒粗剪</strong></div><div class="stage-actions"><span class="save-state">9:16 · 1080 × 1920</span><button class="button quiet small-button">预览</button></div></header>`}
-      <div class="player-area"><div class="player-frame"><div class="video-viewport ${isGeneratingShots ? 'is-generating' : ''}">${playerContent}</div><div class="viewer-controls"><span class="viewer-time">${isGeneratingShots ? '生成中' : `${project.currentTime} <i>/ ${project.duration}.00</i>`}</span>${isGeneratingShots ? '<span></span>' : `<button class="viewer-play" data-action="toggle-preview-play" aria-label="播放预览">${icon('play')}</button>`}<span class="viewer-format" aria-label="画面比例 9:16"><span class="viewer-static-icon">${icon('focus')}</span><span class="viewer-static-icon">${icon('aspect')}</span><strong>9:16</strong></span></div></div></div>
-      <div class="timeline-editor"><div class="timeline-head"><div><span class="timeline-status ${state.running ? 'working' : ''}"></span><strong>Cut v1</strong><small>${isGeneratingShots ? '正在生成镜头' : state.running ? 'Agent 正在组装' : '已保存'}</small></div><div><button title="撤销" aria-label="撤销">${icon('undo')}</button><button title="重做" aria-label="重做">${icon('redo')}</button><span></span><button aria-label="缩小时间线">${icon('minus')}</button><i></i><button aria-label="放大时间线">${icon('plus')}</button></div></div><div class="time-ruler">${project.ruler.map(time => `<span>${time}</span>`).join('')}</div><div class="track"><b>V1</b><div class="clip-row">${timelineClipsMarkup}</div></div><div class="track audio"><b>A1</b><div class="waveform ${state.running && !isGeneratingShots ? 'is-generating' : 'is-pending'}">${Array.from({ length: 58 }, (_, i) => `<i style="--h:${18 + ((i * 17) % 58)}%"></i>`).join('')}</div></div>${isGeneratingShots ? '' : `<div class="playhead" style="left:${playheadPosition}%"><span>${playheadLabel}</span></div>`}</div>
+      <div class="player-area"><div class="player-frame"><div class="video-viewport ${isGeneratingShots ? 'is-generating' : ''}">${playerContent}</div><div class="viewer-controls"><span class="viewer-time">${isGeneratingShots ? '生成中' : `<b data-playback-current>${formatPlaybackTime(playbackTime, true)}</b> <i>/ ${project.duration}.00</i>`}</span>${isGeneratingShots ? '<span></span>' : `<button class="viewer-play ${state.previewPlaying ? 'is-playing' : ''}" data-action="toggle-preview-play" aria-label="${state.previewPlaying ? '暂停预览' : '播放预览'}">${icon(state.previewPlaying ? 'pause' : 'play')}</button>`}<span class="viewer-format" aria-label="画面比例 9:16"><span class="viewer-static-icon">${icon('focus')}</span><span class="viewer-static-icon">${icon('aspect')}</span><strong>9:16</strong></span></div></div></div>
+      <div class="timeline-editor" ${isGeneratingShots ? '' : 'data-playback-timeline="true"'}><div class="timeline-head"><div><span class="timeline-status ${state.running ? 'working' : ''}"></span><strong>Cut v1</strong><small>${isGeneratingShots ? '正在生成镜头' : state.running ? 'Agent 正在组装' : '已保存'}</small></div><div><button title="撤销" aria-label="撤销">${icon('undo')}</button><button title="重做" aria-label="重做">${icon('redo')}</button><span></span><button aria-label="缩小时间线">${icon('minus')}</button><i></i><button aria-label="放大时间线">${icon('plus')}</button></div></div><div class="time-ruler">${project.ruler.map(time => `<span>${time}</span>`).join('')}</div><div class="track"><b>V1</b><div class="clip-row">${timelineClipsMarkup}</div></div><div class="track audio"><b>A1</b><div class="waveform ${state.running && !isGeneratingShots ? 'is-generating' : 'is-pending'}">${Array.from({ length: 58 }, (_, i) => `<i style="--h:${18 + ((i * 17) % 58)}%"></i>`).join('')}</div></div>${isGeneratingShots ? '' : `<div class="timeline-playback-layer"><div class="playhead" style="left:${playheadPosition}%"><span>${playheadLabel}</span></div></div>`}</div>
     </section>`;
 }
 
@@ -888,6 +897,7 @@ function render() {
   }
   if (state.toast) app.insertAdjacentHTML('beforeend', `<div class="toast" role="status" aria-live="polite">${state.toast}</div>`);
   bindInputs();
+  bindTimelinePlayback();
   if (state.view === 'ideation' || state.view === 'import-analysis') {
     const shell = document.querySelector('.ideation-shell');
     if (shell) shell.scrollTop = ideationScroll;
@@ -931,6 +941,195 @@ function bindInputs() {
   }, { once: true }));
 }
 
+function updatePlaybackUI() {
+  const totalDuration = parseTimecode(activeProject().duration);
+  const safeTime = Math.min(totalDuration, Math.max(0, state.playbackTime));
+  const progress = totalDuration ? safeTime / totalDuration * 100 : 0;
+  const current = document.querySelector('[data-playback-current]');
+  const playhead = document.querySelector('.timeline-playback-layer .playhead');
+  const playheadLabel = playhead?.querySelector('span');
+  const control = document.querySelector('.viewer-play');
+  const controlIcon = control?.querySelector('.ui-icon');
+  if (current) current.textContent = formatPlaybackTime(safeTime, true);
+  if (playhead) playhead.style.left = `${progress}%`;
+  if (playheadLabel) playheadLabel.textContent = formatPlaybackTime(safeTime);
+  document.querySelectorAll('[data-playback-clip]').forEach(clip => {
+    clip.classList.toggle('is-active', Number(clip.dataset.playbackClip) === state.playbackClipIndex);
+  });
+  if (control) {
+    control.classList.toggle('is-playing', state.previewPlaying);
+    control.setAttribute('aria-label', state.previewPlaying ? '暂停预览' : '播放预览');
+  }
+  if (controlIcon) {
+    controlIcon.classList.toggle('ri-play-fill', !state.previewPlaying);
+    controlIcon.classList.toggle('ri-pause-fill', state.previewPlaying);
+  }
+}
+
+function setSequenceSource(video, clipIndex, localTime, shouldPlay) {
+  const project = activeProject();
+  const asset = project.videos[clipIndex];
+  if (!video || !asset) return;
+  const nextUrl = new URL(asset.url, document.baseURI).href;
+  const sourceChanged = video.currentSrc !== nextUrl && video.src !== nextUrl;
+  const loadToken = `${Date.now()}-${Math.random()}`;
+  video.dataset.loadToken = loadToken;
+  video.dataset.sequenceIndex = String(clipIndex);
+  video.muted = false;
+  video.volume = 1;
+
+  const applyPosition = () => {
+    if (video.dataset.loadToken !== loadToken) return;
+    video.dataset.transitioning = 'false';
+    const maxTime = Number.isFinite(video.duration) ? Math.max(0, video.duration - 0.04) : localTime;
+    try { video.currentTime = Math.min(Math.max(0, localTime), maxTime); } catch { /* metadata is still settling */ }
+    if (shouldPlay) {
+      state.previewPlaying = true;
+      video.play().catch(() => {
+        state.previewPlaying = false;
+        updatePlaybackUI();
+      });
+    }
+    updatePlaybackUI();
+  };
+
+  if (sourceChanged) {
+    video.src = asset.url;
+    if (asset.poster) video.poster = asset.poster;
+    else video.removeAttribute('poster');
+    video.addEventListener('loadedmetadata', applyPosition, { once: true });
+    video.load();
+  } else if (video.readyState >= 1) {
+    applyPosition();
+  } else {
+    video.addEventListener('loadedmetadata', applyPosition, { once: true });
+  }
+}
+
+function seekSequence(globalTime, shouldPlay = state.previewPlaying) {
+  const segments = playbackSegments();
+  const totalDuration = parseTimecode(activeProject().duration);
+  const safeTime = Math.min(totalDuration, Math.max(0, globalTime));
+  const segment = segments.find(item => safeTime < item.end) || segments.at(-1);
+  if (!segment) return;
+  state.playbackTime = safeTime;
+  state.playbackClipIndex = segment.index;
+  const localTime = Math.min(segment.duration, Math.max(0, safeTime - segment.start));
+  setSequenceSource(document.querySelector('.workspace-preview-video'), segment.index, localTime, shouldPlay);
+  updatePlaybackUI();
+}
+
+function advanceSequence(video) {
+  if (!state.previewPlaying || video.dataset.transitioning === 'true') return;
+  video.dataset.transitioning = 'true';
+  const segments = playbackSegments();
+  const currentIndex = Number(video.dataset.sequenceIndex || state.playbackClipIndex);
+  const next = segments[currentIndex + 1];
+  if (next) {
+    state.playbackTime = next.start;
+    state.playbackClipIndex = next.index;
+    setSequenceSource(video, next.index, 0, true);
+    return;
+  }
+  state.playbackTime = parseTimecode(activeProject().duration);
+  state.previewPlaying = false;
+  video.dataset.transitioning = 'false';
+  video.pause();
+  updatePlaybackUI();
+  persistState();
+}
+
+function bindTimelinePlayback() {
+  const video = document.querySelector('.workspace-preview-video');
+  if (!video) return;
+  video.muted = false;
+  video.volume = 1;
+  const segments = playbackSegments();
+  const currentIndex = Math.min(segments.length - 1, Math.max(0, Number(video.dataset.sequenceIndex) || 0));
+  const segment = segments[currentIndex];
+  const desiredLocalTime = Math.max(0, state.playbackTime - segment.start);
+  const restorePosition = () => {
+    if (Math.abs(video.currentTime - desiredLocalTime) > .08) {
+      try { video.currentTime = Math.min(desiredLocalTime, Math.max(0, video.duration - .04)); } catch { /* wait for metadata */ }
+    }
+  };
+  if (video.readyState >= 1) restorePosition();
+  else video.addEventListener('loadedmetadata', restorePosition, { once: true });
+  video.addEventListener('play', () => {
+    state.previewPlaying = true;
+    updatePlaybackUI();
+  });
+  video.addEventListener('timeupdate', () => {
+    const index = Math.min(segments.length - 1, Math.max(0, Number(video.dataset.sequenceIndex) || 0));
+    const active = segments[index];
+    if (!active) return;
+    state.playbackClipIndex = index;
+    state.playbackTime = Math.min(active.end, active.start + video.currentTime);
+    updatePlaybackUI();
+    if (state.previewPlaying && video.currentTime >= active.duration - .06) advanceSequence(video);
+  });
+  video.addEventListener('ended', () => advanceSequence(video));
+  updatePlaybackUI();
+}
+
+function toggleSequencePlayback() {
+  const video = document.querySelector('.workspace-preview-video');
+  if (!video) return;
+  const totalDuration = parseTimecode(activeProject().duration);
+  if (state.previewPlaying && !video.paused) {
+    state.previewPlaying = false;
+    video.pause();
+    updatePlaybackUI();
+    persistState();
+    return;
+  }
+  state.previewPlaying = true;
+  if (state.playbackTime >= totalDuration - .04) {
+    seekSequence(0, true);
+  } else {
+    video.muted = false;
+    video.volume = 1;
+    video.play().catch(() => {
+      state.previewPlaying = false;
+      updatePlaybackUI();
+    });
+  }
+  updatePlaybackUI();
+}
+
+function timelineTimeAtPointer(event, timeline) {
+  const bounds = timeline.getBoundingClientRect();
+  const start = bounds.left + 48;
+  const end = bounds.right - 12;
+  const ratio = Math.min(1, Math.max(0, (event.clientX - start) / Math.max(1, end - start)));
+  return ratio * parseTimecode(activeProject().duration);
+}
+
+function startTimelineSeek(event, timeline) {
+  if (event.target.closest('button')) return;
+  const wasPlaying = state.previewPlaying;
+  document.querySelector('.workspace-preview-video')?.pause();
+  state.previewPlaying = false;
+  timeline.classList.add('is-scrubbing');
+  const move = moveEvent => seekSequence(timelineTimeAtPointer(moveEvent, timeline), false);
+  const stop = stopEvent => {
+    move(stopEvent);
+    timeline.classList.remove('is-scrubbing');
+    window.removeEventListener('pointermove', move);
+    window.removeEventListener('pointerup', stop);
+    window.removeEventListener('pointercancel', stop);
+    if (wasPlaying) {
+      state.previewPlaying = true;
+      seekSequence(state.playbackTime, true);
+    }
+    persistState();
+  };
+  move(event);
+  window.addEventListener('pointermove', move);
+  window.addEventListener('pointerup', stop);
+  window.addEventListener('pointercancel', stop);
+}
+
 function handleFiles(event) {
   const files = [...event.target.files];
   if (!files.length) return;
@@ -956,8 +1155,38 @@ function formatTime(seconds) {
   return `${min}:${sec}`;
 }
 
+function parseTimecode(value) {
+  const [minutes = 0, seconds = 0] = String(value).split(':').map(Number);
+  return minutes * 60 + seconds;
+}
+
+function formatPlaybackTime(seconds, precise = false) {
+  const safe = Math.max(0, Number.isFinite(seconds) ? seconds : 0);
+  const minutes = Math.floor(safe / 60).toString().padStart(2, '0');
+  const wholeSeconds = Math.floor(safe % 60).toString().padStart(2, '0');
+  if (!precise) return `${minutes}:${wholeSeconds}`;
+  const hundredths = Math.floor((safe % 1) * 100).toString().padStart(2, '0');
+  return `${minutes}:${wholeSeconds}.${hundredths}`;
+}
+
+function playbackSegments(project = activeProject()) {
+  return project.clips.map((clip, index) => {
+    const [startCode, endCode] = clip.range.split('–');
+    const start = parseTimecode(startCode);
+    const end = parseTimecode(endCode);
+    return { index, start, end, duration: Math.max(0, end - start) };
+  });
+}
+
+function resetPlayback() {
+  state.playbackTime = 0;
+  state.playbackClipIndex = 0;
+  state.previewPlaying = false;
+}
+
 function configureRun(projectType) {
   state.projectType = projectType;
+  resetPlayback();
   state.tasks = structuredClone(projectProfiles[projectType].tasks);
   state.copilotMode = 'running';
   state.running = true;
@@ -1058,6 +1287,7 @@ function tickRun() {
 
 function enterWorkspace(mode) {
   state.projectType = 'romance';
+  resetPlayback();
   state.view = 'workspace';
   state.activeTool = mode === 'import' ? 'media' : 'docs';
   state.activeDoc = 'brief';
@@ -1077,6 +1307,7 @@ function enterWorkspace(mode) {
 function enterIdeation() {
   clearInterval(analysisTimer);
   state.projectType = 'romance';
+  resetPlayback();
   state.view = 'ideation';
   state.ideaStep = 0;
   state.ideaAnswers = [];
@@ -1102,6 +1333,7 @@ function enterImportAnalysis() {
   clearInterval(runTimer);
   clearInterval(analysisTimer);
   state.projectType = 'lamp';
+  resetPlayback();
   state.view = 'import-analysis';
   state.analysisStep = 0;
   state.analysisComplete = false;
@@ -1165,6 +1397,7 @@ function resumeProjectWorkspace(projectType) {
   const project = projectProfiles[projectType];
   ensureProjectDocument(projectType);
   state.projectType = projectType;
+  resetPlayback();
   state.tasks = structuredClone(project.tasks).map(task => ({ ...task, state: 'done', progress: 100 }));
   state.elapsed = projectType === 'romance' ? 18 : 17;
   state.running = false;
@@ -1284,23 +1517,7 @@ app.addEventListener('click', event => {
   }
 
   if (action === 'toggle-preview-play') {
-    const video = document.querySelector('.workspace-preview-video');
-    if (!video) return;
-    const control = document.querySelector('.viewer-play');
-    const controlIcon = control?.querySelector('.ui-icon');
-    if (video.paused) {
-      video.play();
-      control?.classList.add('is-playing');
-      control?.setAttribute('aria-label', '暂停预览');
-      controlIcon?.classList.remove('ri-play-fill');
-      controlIcon?.classList.add('ri-pause-fill');
-    } else {
-      video.pause();
-      control?.classList.remove('is-playing');
-      control?.setAttribute('aria-label', '播放预览');
-      controlIcon?.classList.remove('ri-pause-fill');
-      controlIcon?.classList.add('ri-play-fill');
-    }
+    toggleSequencePlayback();
     return;
   }
 
@@ -1409,10 +1626,19 @@ app.addEventListener('click', event => {
 
 app.addEventListener('pointerdown', event => {
   const handle = event.target.closest('[data-resize-panel]');
-  if (!handle) return;
-  event.preventDefault();
-  startPanelResize(event, handle.dataset.resizePanel, handle);
+  if (handle) {
+    event.preventDefault();
+    startPanelResize(event, handle.dataset.resizePanel, handle);
+    return;
+  }
+  const timeline = event.target.closest('[data-playback-timeline="true"]');
+  if (timeline) {
+    event.preventDefault();
+    startTimelineSeek(event, timeline);
+  }
 });
+
+window.addEventListener('beforeunload', persistState);
 
 render();
 if (state.view === 'workspace' && state.running) startRunTimer();
